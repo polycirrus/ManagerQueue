@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountTabName" xml:space="preserve">
+    <value>My Account</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Manager Queue</value>
   </data>
+  <data name="CancelButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangePasswordButtonName" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="ConfirmPasswordFieldLabel" xml:space="preserve">
     <value>Confirm password</value>
+  </data>
+  <data name="ConnectionFailedExceptionMessage" xml:space="preserve">
+    <value>Unable to connect to the server. Please check your network connection or try again later</value>
+  </data>
+  <data name="EmployeeRoleName" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="ExitQueueButtonText" xml:space="preserve">
+    <value>Exit queue</value>
   </data>
   <data name="FirstNameFieldLabel" xml:space="preserve">
     <value>First name</value>
@@ -132,14 +150,50 @@
   <data name="LastNameFieldLabel" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="ManagerNameColumnHeader" xml:space="preserve">
+    <value>Manager name</value>
+  </data>
+  <data name="ManagerRoleName" xml:space="preserve">
+    <value>Manager</value>
+  </data>
   <data name="MiddleNameFieldLabel" xml:space="preserve">
     <value>Middle name</value>
+  </data>
+  <data name="MissingFieldErrorMessageTemplate" xml:space="preserve">
+    <value>Field '{0}' cannot be empty</value>
+  </data>
+  <data name="MoveDownButtonText" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="MoveUpButtonText" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="MyQueueTabName" xml:space="preserve">
+    <value>My Queue</value>
+  </data>
+  <data name="NameFieldLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="OrderFieldLabel" xml:space="preserve">
+    <value>Order</value>
   </data>
   <data name="PasswordFieldLabel" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PasswordsDoNotMatchErrorMessage" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="PositionComboBoxPlaceholder" xml:space="preserve">
+    <value>Select a position or enter a new one...</value>
+  </data>
   <data name="PositionFieldLabel" xml:space="preserve">
     <value>Position</value>
+  </data>
+  <data name="PriorityFieldLabel" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="QueueEntriesTabName" xml:space="preserve">
+    <value>Queues I'm In</value>
   </data>
   <data name="RegisterButtonText" xml:space="preserve">
     <value>Register</value>
@@ -147,11 +201,29 @@
   <data name="RegisterLabelText" xml:space="preserve">
     <value>Don't have an account?</value>
   </data>
+  <data name="RegistrationFailedExceptionMessage" xml:space="preserve">
+    <value>Unable to register using the provided information</value>
+  </data>
   <data name="RegistrationWindowTitle" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="RememberMeCheckBoxText" xml:space="preserve">
     <value>Remember me</value>
+  </data>
+  <data name="RemoveQueueItemButtonText" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="RevertChangesButtonName" xml:space="preserve">
+    <value>Revert changes</value>
+  </data>
+  <data name="SaveChangesButtonName" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
+  <data name="SaveOrderButtonText" xml:space="preserve">
+    <value>Save order</value>
+  </data>
+  <data name="SecretaryRoleName" xml:space="preserve">
+    <value>Secretary</value>
   </data>
   <data name="ServiceUriNotSetExceptionMessage" xml:space="preserve">
     <value>Service address not set. Please set the correct address in the application configuration file.</value>
@@ -160,12 +232,24 @@
     <value>Sign in</value>
   </data>
   <data name="SignInErrorExceptionMessage" xml:space="preserve">
-    <value>Unable to authenticate using the provided credentials.</value>
+    <value>Unable to authenticate using the provided credentials</value>
   </data>
   <data name="SignInWindowTitle" xml:space="preserve">
     <value>Sign In</value>
   </data>
+  <data name="UnableToCreateErrorMessageTemplate" xml:space="preserve">
+    <value>Unable to create entity'{0}'</value>
+  </data>
+  <data name="UserFetchFailedExceptionMessage" xml:space="preserve">
+    <value>Unable to get user information</value>
+  </data>
   <data name="UserNameFieldLabel" xml:space="preserve">
     <value>User name</value>
+  </data>
+  <data name="UserTypeFieldLabel" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ViceManagerRoleName" xml:space="preserve">
+    <value>Vice</value>
   </data>
 </root>

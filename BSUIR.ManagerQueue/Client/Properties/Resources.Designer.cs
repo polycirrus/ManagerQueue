@@ -61,6 +61,15 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Account.
+        /// </summary>
+        public static string AccountTabName {
+            get {
+                return ResourceManager.GetString("AccountTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manager Queue.
         /// </summary>
         public static string ApplicationName {
@@ -70,11 +79,56 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string CancelButtonText {
+            get {
+                return ResourceManager.GetString("CancelButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change password.
+        /// </summary>
+        public static string ChangePasswordButtonName {
+            get {
+                return ResourceManager.GetString("ChangePasswordButtonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm password.
         /// </summary>
         public static string ConfirmPasswordFieldLabel {
             get {
                 return ResourceManager.GetString("ConfirmPasswordFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to connect to the server. Please check your network connection or try again later.
+        /// </summary>
+        public static string ConnectionFailedExceptionMessage {
+            get {
+                return ResourceManager.GetString("ConnectionFailedExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        public static string EmployeeRoleName {
+            get {
+                return ResourceManager.GetString("EmployeeRoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit queue.
+        /// </summary>
+        public static string ExitQueueButtonText {
+            get {
+                return ResourceManager.GetString("ExitQueueButtonText", resourceCulture);
             }
         }
         
@@ -106,11 +160,83 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manager name.
+        /// </summary>
+        public static string ManagerNameColumnHeader {
+            get {
+                return ResourceManager.GetString("ManagerNameColumnHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manager.
+        /// </summary>
+        public static string ManagerRoleName {
+            get {
+                return ResourceManager.GetString("ManagerRoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Middle name.
         /// </summary>
         public static string MiddleNameFieldLabel {
             get {
                 return ResourceManager.GetString("MiddleNameFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &apos;{0}&apos; cannot be empty.
+        /// </summary>
+        public static string MissingFieldErrorMessageTemplate {
+            get {
+                return ResourceManager.GetString("MissingFieldErrorMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move down.
+        /// </summary>
+        public static string MoveDownButtonText {
+            get {
+                return ResourceManager.GetString("MoveDownButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move up.
+        /// </summary>
+        public static string MoveUpButtonText {
+            get {
+                return ResourceManager.GetString("MoveUpButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Queue.
+        /// </summary>
+        public static string MyQueueTabName {
+            get {
+                return ResourceManager.GetString("MyQueueTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string NameFieldLabel {
+            get {
+                return ResourceManager.GetString("NameFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        public static string OrderFieldLabel {
+            get {
+                return ResourceManager.GetString("OrderFieldLabel", resourceCulture);
             }
         }
         
@@ -124,11 +250,47 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Passwords do not match.
+        /// </summary>
+        public static string PasswordsDoNotMatchErrorMessage {
+            get {
+                return ResourceManager.GetString("PasswordsDoNotMatchErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a position or enter a new one....
+        /// </summary>
+        public static string PositionComboBoxPlaceholder {
+            get {
+                return ResourceManager.GetString("PositionComboBoxPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string PositionFieldLabel {
             get {
                 return ResourceManager.GetString("PositionFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string PriorityFieldLabel {
+            get {
+                return ResourceManager.GetString("PriorityFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Queues I&apos;m In.
+        /// </summary>
+        public static string QueueEntriesTabName {
+            get {
+                return ResourceManager.GetString("QueueEntriesTabName", resourceCulture);
             }
         }
         
@@ -151,6 +313,15 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to register using the provided information.
+        /// </summary>
+        public static string RegistrationFailedExceptionMessage {
+            get {
+                return ResourceManager.GetString("RegistrationFailedExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string RegistrationWindowTitle {
@@ -165,6 +336,51 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         public static string RememberMeCheckBoxText {
             get {
                 return ResourceManager.GetString("RememberMeCheckBoxText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string RemoveQueueItemButtonText {
+            get {
+                return ResourceManager.GetString("RemoveQueueItemButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Revert changes.
+        /// </summary>
+        public static string RevertChangesButtonName {
+            get {
+                return ResourceManager.GetString("RevertChangesButtonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save changes.
+        /// </summary>
+        public static string SaveChangesButtonName {
+            get {
+                return ResourceManager.GetString("SaveChangesButtonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save order.
+        /// </summary>
+        public static string SaveOrderButtonText {
+            get {
+                return ResourceManager.GetString("SaveOrderButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Secretary.
+        /// </summary>
+        public static string SecretaryRoleName {
+            get {
+                return ResourceManager.GetString("SecretaryRoleName", resourceCulture);
             }
         }
         
@@ -187,7 +403,7 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to authenticate using the provided credentials..
+        ///   Looks up a localized string similar to Unable to authenticate using the provided credentials.
         /// </summary>
         public static string SignInErrorExceptionMessage {
             get {
@@ -205,11 +421,47 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to create entity&apos;{0}&apos;.
+        /// </summary>
+        public static string UnableToCreateErrorMessageTemplate {
+            get {
+                return ResourceManager.GetString("UnableToCreateErrorMessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get user information.
+        /// </summary>
+        public static string UserFetchFailedExceptionMessage {
+            get {
+                return ResourceManager.GetString("UserFetchFailedExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User name.
         /// </summary>
         public static string UserNameFieldLabel {
             get {
                 return ResourceManager.GetString("UserNameFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string UserTypeFieldLabel {
+            get {
+                return ResourceManager.GetString("UserTypeFieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vice.
+        /// </summary>
+        public static string ViceManagerRoleName {
+            get {
+                return ResourceManager.GetString("ViceManagerRoleName", resourceCulture);
             }
         }
     }

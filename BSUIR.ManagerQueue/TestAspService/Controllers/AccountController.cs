@@ -19,6 +19,7 @@ using TestAspService.Results;
 using BSUIR.ManagerQueue.Data.Model;
 using System.Data.Entity.Validation;
 using BSUIR.ManagerQueue.Infrastructure.Models;
+using BSUIR.ManagerQueue.Infrastructure;
 
 namespace TestAspService.Controllers
 {
@@ -100,7 +101,17 @@ namespace TestAspService.Controllers
             if (!result.Succeeded)
                 return GetErrorResult(result);
 
+            var role = GetRoleFromUserType(model.UserType);
+            if (!string.IsNullOrEmpty(role))
+                await UserManager.AddToRoleAsync(user.Id, role);
+
             return Ok();
+        }
+
+        // GET api/Account
+        public async Task<Employee> Get()
+        {
+            return await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
         }
 
         protected override void Dispose(bool disposing)
@@ -150,72 +161,18 @@ namespace TestAspService.Controllers
             return null;
         }
 
-        private class ExternalLoginData
+        private static string GetRoleFromUserType(UserType userType)
         {
-            public string LoginProvider { get; set; }
-            public string ProviderKey { get; set; }
-            public string UserName { get; set; }
-
-            public IList<Claim> GetClaims()
+            switch (userType)
             {
-                IList<Claim> claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
-
-                if (UserName != null)
-                {
-                    claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
-                }
-
-                return claims;
-            }
-
-            public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
-            {
-                if (identity == null)
-                {
+                case UserType.Secretary:
+                    return RoleNames.Secretary;
+                case UserType.Vice:
+                    return RoleNames.Vice;
+                case UserType.Manager:
+                    return RoleNames.Manager;
+                default:
                     return null;
-                }
-
-                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || String.IsNullOrEmpty(providerKeyClaim.Value))
-                {
-                    return null;
-                }
-
-                if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
-                {
-                    return null;
-                }
-
-                return new ExternalLoginData
-                {
-                    LoginProvider = providerKeyClaim.Issuer,
-                    ProviderKey = providerKeyClaim.Value,
-                    UserName = identity.FindFirstValue(ClaimTypes.Name)
-                };
-            }
-        }
-
-        private static class RandomOAuthStateGenerator
-        {
-            private static RandomNumberGenerator _random = new RNGCryptoServiceProvider();
-
-            public static string Generate(int strengthInBits)
-            {
-                const int bitsPerByte = 8;
-
-                if (strengthInBits % bitsPerByte != 0)
-                {
-                    throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
-                }
-
-                int strengthInBytes = strengthInBits / bitsPerByte;
-
-                byte[] data = new byte[strengthInBytes];
-                _random.GetBytes(data);
-                return HttpServerUtility.UrlTokenEncode(data);
             }
         }
 

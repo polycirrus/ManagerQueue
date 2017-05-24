@@ -1,12 +1,27 @@
-﻿<Window x:Class="BSUIR.ManagerQueue.Client.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIR.ManagerQueue.Client"
+        xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
+        xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
+        x:Class="BSUIR.ManagerQueue.Client.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{x:Static properties:Resources.ApplicationName}" Height="500" Width="800">
     <Grid>
-        
+        <TabControl x:Name="tabControl" TabStripPlacement="Left" ItemsSource="{Binding Tabs}" >
+            <TabControl.Resources>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Background" Value="LightGray" />
+                </Style>
+                <Style TargetType="TabItem">
+                    <Setter Property="Padding" Value="5" />
+                </Style>
+            </TabControl.Resources>
+            <TabControl.DataContext>
+                <ViewModels:MainWindowViewModel/>
+            </TabControl.DataContext>
+        </TabControl>
     </Grid>
 </Window>

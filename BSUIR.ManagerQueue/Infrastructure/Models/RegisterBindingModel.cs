@@ -26,5 +26,8 @@ namespace BSUIR.ManagerQueue.Infrastructure.Models
 
         [Required]
         public int PositionId { get; set; }
+
+        [Required]
+        public UserType UserType { get; set; }
     }
 }

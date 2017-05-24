@@ -57,7 +57,7 @@
         <CheckBox x:Name="rememberMeCheckBox" Content="{x:Static properties:Resources.RememberMeCheckBoxText}" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Margin="5,20,5,5" IsChecked="{Binding RememberMe}" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}"/>
         <Button x:Name="signInButton" Grid.ColumnSpan="2" Content="{x:Static properties:Resources.SignInButtonText}" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Center" Width="170" Margin="5" Command="{Binding SignInCommand, Mode=OneWay}" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}"/>
         <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding ErrorMessage}" Foreground="#FFCC0000" />
-        <StackPanel HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center" Orientation="Horizontal">
+        <StackPanel HorizontalAlignment="Center" Margin="5" Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center" Orientation="Horizontal">
             <Label Content="{x:Static properties:Resources.RegisterLabelText}" />
             <Button x:Name="registerButton" Content="{x:Static properties:Resources.RegisterButtonText}" Padding="3" Margin="5,0,0,0" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}" Command="{Binding RegisterCommand, Mode=OneWay}" />
         </StackPanel>

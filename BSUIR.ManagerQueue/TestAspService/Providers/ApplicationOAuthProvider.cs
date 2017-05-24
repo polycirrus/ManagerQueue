@@ -104,7 +104,11 @@ namespace TestAspService.Providers
                 }
 
                 if (await userManager.CheckPasswordAsync(user, context.Password))
+                {
+                    await userManager.ResetAccessFailedCountAsync(user.Id);
                     return user;
+                }
+
                 await userManager.AccessFailedAsync(user.Id);
             }
 
