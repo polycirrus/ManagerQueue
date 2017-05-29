@@ -1,28 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
+
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using TestAspService.Models;
-using TestAspService.Providers;
-using TestAspService.Results;
-using BSUIR.ManagerQueue.Data.Model;
-using System.Data.Entity.Validation;
-using BSUIR.ManagerQueue.Infrastructure.Models;
-using BSUIR.ManagerQueue.Infrastructure;
 
 namespace TestAspService.Controllers
 {
+    using BSUIR.ManagerQueue.Data.Model;
+    using BSUIR.ManagerQueue.Infrastructure.Models;
+    using BSUIR.ManagerQueue.Infrastructure;
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
@@ -78,6 +71,31 @@ namespace TestAspService.Controllers
             return Ok();
         }
 
+        // POST api/Account/SetPassword
+        [Authorize(Roles = RoleNames.Administrator)]
+        [Route("SetPassword")]
+        public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            IdentityResult result;
+            if (UserManager.HasPassword(model.UserId))
+            {
+                result = await UserManager.RemovePasswordAsync(model.UserId);
+
+                if (!result.Succeeded)
+                    return GetErrorResult(result);
+            }
+
+            result = await UserManager.AddPasswordAsync(model.UserId, model.NewPassword);
+
+            if (!result.Succeeded)
+                return GetErrorResult(result);
+
+            return Ok();
+        }
+
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
@@ -111,7 +129,15 @@ namespace TestAspService.Controllers
         // GET api/Account
         public async Task<Employee> Get()
         {
-            return await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
+
+            var userRoles = await UserManager.GetRolesAsync(user.Id);
+            user.Type = GetUserTypeFromRoles(userRoles);
+            user.IsAdministrator = userRoles.Contains(RoleNames.Administrator);
+
+            user.PasswordHash = null;
+
+            return user;
         }
 
         protected override void Dispose(bool disposing)
@@ -174,6 +200,23 @@ namespace TestAspService.Controllers
                 default:
                     return null;
             }
+        }
+
+        private static UserType GetUserTypeFromRoles(ICollection<string> roleNames)
+        {
+            if (roleNames == null || !roleNames.Any())
+                return UserType.Employee;
+
+            if (roleNames.Any(role => role == RoleNames.Manager))
+                return UserType.Manager;
+
+            if (roleNames.Any(role => role == RoleNames.Vice))
+                return UserType.Vice;
+
+            if (roleNames.Any(role => role == RoleNames.Secretary))
+                return UserType.Secretary;
+
+            return UserType.Employee;
         }
 
         #endregion

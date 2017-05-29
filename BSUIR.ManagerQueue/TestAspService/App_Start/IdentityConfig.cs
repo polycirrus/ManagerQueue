@@ -1,14 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using TestAspService.Models;
-using BSUIR.ManagerQueue.Data.Model;
-using BSUIR.ManagerQueue.Data;
 
 namespace TestAspService
 {
+    using BSUIR.ManagerQueue.Data.Model;
+    using BSUIR.ManagerQueue.Data;
+
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<Employee, int>
     {
@@ -32,10 +30,10 @@ namespace TestAspService
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false
             };
 
             var dataProtectionProvider = options.DataProtectionProvider;

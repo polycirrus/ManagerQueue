@@ -15,9 +15,13 @@ namespace BSUIR.ManagerQueue.Data.Model
         public int Id { get; set; }
 
         [Required]
+        public int ManagerId { get; set; }
         public virtual Employee Manager { get; set; }
+
         [Required]
+        public int EmployeeId { get; set; }
         public virtual Employee Employee { get; set; }
+
         public int Order { get; set; }
     }
 }

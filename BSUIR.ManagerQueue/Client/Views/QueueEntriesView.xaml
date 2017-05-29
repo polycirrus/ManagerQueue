@@ -7,7 +7,7 @@
     xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
     xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
     xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"        
-    mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="300">
+    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.DataContext>
         <ViewModels:QueueEntriesViewModel/>
     </UserControl.DataContext>

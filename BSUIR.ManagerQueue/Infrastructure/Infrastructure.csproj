@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Models\ChangePasswordBindingModel.cs" />
     <Compile Include="Models\RegisterBindingModel.cs" />
+    <Compile Include="Models\SetPasswordBindingModel.cs" />
     <Compile Include="Models\TokenGrantModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleNames.cs" />

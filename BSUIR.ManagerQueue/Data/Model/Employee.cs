@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
+
+using Microsoft.AspNet.Identity.EntityFramework;
+
 using Newtonsoft.Json;
-using BSUIR.ManagerQueue.Infrastructure;
 
 namespace BSUIR.ManagerQueue.Data.Model
 {
+    using Infrastructure;
+
     [Table("Employee")]
     public class Employee : IdentityUser<int, UserLogin, UserRole, UserClaim>, IEntity
     {
@@ -27,6 +29,9 @@ namespace BSUIR.ManagerQueue.Data.Model
 
         [NotMapped]
         public UserType Type { get; set; }
+
+        [NotMapped]
+        public bool IsAdministrator { get; set; }
 
         public int PositionId { get; set; }
         public virtual Position Position { get; set; }

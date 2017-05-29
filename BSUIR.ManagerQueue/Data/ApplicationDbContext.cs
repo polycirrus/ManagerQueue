@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using BSUIR.ManagerQueue.Data.Model;
+﻿using System.Data.Entity;
 
 using Microsoft.AspNet.Identity.EntityFramework;
-using BSUIR.ManagerQueue.Infrastructure;
 
 namespace BSUIR.ManagerQueue.Data
 {
+    using Infrastructure;
+    using Model;
+
     public class ApplicationDbContext : IdentityDbContext<Employee, Role, int, UserLogin, UserRole, UserClaim>
     {
         public virtual DbSet<Position> Positions { get; set; }
@@ -66,6 +59,7 @@ namespace BSUIR.ManagerQueue.Data
             context.Roles.Add(new Role() { Name = RoleNames.Secretary });
             context.Roles.Add(new Role() { Name = RoleNames.Vice });
             context.Roles.Add(new Role() { Name = RoleNames.Manager });
+            context.Roles.Add(new Role() { Name = RoleNames.Administrator });
         }
     }
 }

@@ -40,7 +40,7 @@ namespace TestAspService.Controllers
 
         // PUT: api/Entity/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> Put(int id, TEntity entity)
+        public virtual async Task<IHttpActionResult> Put(int id, TEntity entity)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace TestAspService.Controllers
 
         // POST: api/Entity
         //[ResponseType(typeof(TEntity))]
-        public async Task<IHttpActionResult> Post(TEntity entity)
+        public virtual async Task<IHttpActionResult> Post(TEntity entity)
         {
             if (!ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace TestAspService.Controllers
 
         // DELETE: api/Entity/5
         //[ResponseType(typeof(TEntity))]
-        public async Task<IHttpActionResult> Delete(int id)
+        public virtual async Task<IHttpActionResult> Delete(int id)
         {
             TEntity entity = await db.Set<TEntity>().FindAsync(id);
             if (entity == null)
