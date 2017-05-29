@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace TestAspService.Controllers
 {
     using BSUIR.ManagerQueue.Data;
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Infrastructure;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.Owin;
-    using System.Data.Entity;
-    using System.Threading.Tasks;
 
     [Authorize]
     public class QueueController : ApiController
@@ -74,16 +75,20 @@ namespace TestAspService.Controllers
             return Ok(await dbContext.Queue.Where(queueItem => queueItem.ManagerId == id).ToArrayAsync());
         }
 
-        // POST: api/Queue
-        public async Task<IHttpActionResult> Post([FromBody]IEnumerable<QueueItem> queueItems)
+        // PUT: api/Queue/5
+        public async Task<IHttpActionResult> Put(int queueId, [FromBody]IEnumerable<QueueItem> queueItems)
         {
             var queueIds = queueItems.Select(queueItem => queueItem.ManagerId).Distinct().ToArray();
-            if (queueIds.Length != 1)
+            if (queueIds.Length != 1 || queueIds[0] != queueId)
                 return BadRequest();
-            var queueId = queueIds[0];
+
+            var userId = User.Identity.GetUserId<int>();
+            if (!await UserHasAccessToQueue(userId, queueId))
+                return Unauthorized();
 
             var originalQueue = await dbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).ToArrayAsync();
-            
+            if (originalQueue.Length != queueItems.Count())
+                return BadRequest();
         }
 
         private async Task<bool> UserHasAccessToQueue(int userId, int queueId)
