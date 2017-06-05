@@ -16,6 +16,7 @@ namespace TestAspService.Controllers
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Infrastructure;
     using BSUIR.ManagerQueue.Infrastructure.Models;
+    using System.Web.Http.Description;
 
     [Authorize]
     public class QueueController : ApiController
@@ -67,6 +68,7 @@ namespace TestAspService.Controllers
 
         // GET: api/Queue/5
         [Authorize(Roles = RoleNames.Manager + ", " + RoleNames.Vice + ", " + RoleNames.Secretary + ", " + RoleNames.Administrator)]
+        [ResponseType(typeof(IEnumerable<QueueItem>))]
         public async Task<IHttpActionResult> Get(int id)
         {
             var userId = User.Identity.GetUserId<int>();
