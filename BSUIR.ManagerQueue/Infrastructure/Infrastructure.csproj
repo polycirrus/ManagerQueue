@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AddQueueEntryModel.cs" />
     <Compile Include="Models\ChangePasswordBindingModel.cs" />
     <Compile Include="Models\RegisterBindingModel.cs" />
     <Compile Include="Models\SetPasswordBindingModel.cs" />

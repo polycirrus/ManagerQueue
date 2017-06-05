@@ -119,7 +119,7 @@ namespace TestAspService.Controllers
             if (!result.Succeeded)
                 return GetErrorResult(result);
 
-            var role = GetRoleFromUserType(model.UserType);
+            var role = ApplicationUserManager.GetRoleFromUserType(model.UserType);
             if (!string.IsNullOrEmpty(role))
                 await UserManager.AddToRoleAsync(user.Id, role);
 
@@ -132,7 +132,7 @@ namespace TestAspService.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
 
             var userRoles = await UserManager.GetRolesAsync(user.Id);
-            user.Type = GetUserTypeFromRoles(userRoles);
+            user.Type = ApplicationUserManager.GetUserTypeFromRoles(userRoles);
             user.IsAdministrator = userRoles.Contains(RoleNames.Administrator);
 
             user.PasswordHash = null;
@@ -185,38 +185,6 @@ namespace TestAspService.Controllers
             }
 
             return null;
-        }
-
-        private static string GetRoleFromUserType(UserType userType)
-        {
-            switch (userType)
-            {
-                case UserType.Secretary:
-                    return RoleNames.Secretary;
-                case UserType.Vice:
-                    return RoleNames.Vice;
-                case UserType.Manager:
-                    return RoleNames.Manager;
-                default:
-                    return null;
-            }
-        }
-
-        private static UserType GetUserTypeFromRoles(ICollection<string> roleNames)
-        {
-            if (roleNames == null || !roleNames.Any())
-                return UserType.Employee;
-
-            if (roleNames.Any(role => role == RoleNames.Manager))
-                return UserType.Manager;
-
-            if (roleNames.Any(role => role == RoleNames.Vice))
-                return UserType.Vice;
-
-            if (roleNames.Any(role => role == RoleNames.Secretary))
-                return UserType.Secretary;
-
-            return UserType.Employee;
         }
 
         #endregion

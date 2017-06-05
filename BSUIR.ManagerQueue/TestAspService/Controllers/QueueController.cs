@@ -15,6 +15,7 @@ namespace TestAspService.Controllers
     using BSUIR.ManagerQueue.Data;
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Infrastructure;
+    using BSUIR.ManagerQueue.Infrastructure.Models;
 
     [Authorize]
     public class QueueController : ApiController
@@ -82,13 +83,96 @@ namespace TestAspService.Controllers
             if (queueIds.Length != 1 || queueIds[0] != queueId)
                 return BadRequest();
 
+            if (!Enumerable.SequenceEqual(queueItems.OrderBy(queueItem => queueItem.Order).Select(queueItem => queueItem.Order), Enumerable.Range(0, queueItems.Count() - 1)))
+                return BadRequest();
+
             var userId = User.Identity.GetUserId<int>();
             if (!await UserHasAccessToQueue(userId, queueId))
                 return Unauthorized();
 
-            var originalQueue = await dbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).ToArrayAsync();
+            var originalQueue = await dbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).OrderBy(queueItem => queueItem.EmployeeId).ToArrayAsync();
             if (originalQueue.Length != queueItems.Count())
                 return BadRequest();
+
+            queueItems = queueItems.OrderBy(queueItem => queueItem.Employee);
+            if (!Enumerable.SequenceEqual(queueItems.Select(queueItem => queueItem.EmployeeId), originalQueue.Select(queueItem => queueItem.EmployeeId)))
+                return BadRequest();
+
+            originalQueue.Zip(queueItems.Select(queueItem => queueItem.Order), (original, order) => original.Order = order);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        // PUT: api/Queue/Entry
+        [HttpPost]
+        [Route("Entry")]
+        public async Task<IHttpActionResult> PutEntry(AddQueueEntryModel queueItem)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (queueItem.EntrantId == queueItem.QueueId)
+                return BadRequest();
+
+            var userId = User.Identity.GetUserId<int>();
+            if (queueItem.EntrantId != userId && !await UserHasAccessToQueue(userId, queueItem.QueueId))
+                return Unauthorized();
+
+            var queueManager = await UserManager.FindByIdAsync(queueItem.QueueId);
+            if (queueManager == null)
+                return BadRequest();
+
+            var entrant = await UserManager.FindByIdAsync(queueItem.EntrantId);
+            if (entrant == null)
+                return BadRequest();
+
+            return Ok(await AddQueueEntry(queueManager, entrant));
+        }
+
+        private async Task<QueueItem> AddQueueEntry(Employee queueManager, Employee entrant)
+        {
+            var queue = queueManager.OwnQueueEntries.OrderBy(item => item.Order).ToArray();
+
+            var queueItem = new QueueItem()
+            {
+                ManagerId = queueManager.Id,
+                EmployeeId = entrant.Id
+            };
+
+            var entrantType = await UserManager.GetUserType(entrant.Id);
+            if (entrantType == UserType.Employee || entrantType == UserType.Secretary || queue.Length == 0)
+            {
+                queueItem.Order = queue.Length;
+            }
+            else
+            {
+                var sliceSize = entrantType == UserType.Manager ? 2 : 3;
+                if (queue.Length <= sliceSize)
+                    queueItem.Order = queue.Length;
+                else
+                {
+                    var currentSliceCount = 0;
+                    foreach (var item in queue)
+                    {
+                        if (await UserManager.GetUserType(item.EmployeeId) == UserType.Employee)
+                        {
+                            if (++currentSliceCount >= sliceSize)
+                            {
+                                queueItem.Order = item.Order;
+                            }
+                        }
+                        else
+                            currentSliceCount = 0;
+                    }
+                }
+            }
+
+            for (int i = queueItem.Order + 1; i < queue.Length; i++)
+                queue[i].Order += 1;
+
+            dbContext.Queue.Add(queueItem);
+            await dbContext.SaveChangesAsync();
+            return queueItem;
         }
 
         private async Task<bool> UserHasAccessToQueue(int userId, int queueId)

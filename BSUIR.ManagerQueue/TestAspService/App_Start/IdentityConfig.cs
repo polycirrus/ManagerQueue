@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 
@@ -6,6 +9,8 @@ namespace TestAspService
 {
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Data;
+    using BSUIR.ManagerQueue.Infrastructure;
+    using System.Threading.Tasks;
 
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
     public class ApplicationUserManager : UserManager<Employee, int>
@@ -42,6 +47,44 @@ namespace TestAspService
                 manager.UserTokenProvider = new DataProtectorTokenProvider<Employee, int>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+
+        public async Task<UserType> GetUserType(int userId)
+        {
+            var userRoles = await GetRolesAsync(userId);
+            return GetUserTypeFromRoles(userRoles);
+        }
+
+        public static string GetRoleFromUserType(UserType userType)
+        {
+            switch (userType)
+            {
+                case UserType.Secretary:
+                    return RoleNames.Secretary;
+                case UserType.Vice:
+                    return RoleNames.Vice;
+                case UserType.Manager:
+                    return RoleNames.Manager;
+                default:
+                    return null;
+            }
+        }
+
+        public static UserType GetUserTypeFromRoles(ICollection<string> roleNames)
+        {
+            if (roleNames == null || !roleNames.Any())
+                return UserType.Employee;
+
+            if (roleNames.Any(role => role == RoleNames.Manager))
+                return UserType.Manager;
+
+            if (roleNames.Any(role => role == RoleNames.Vice))
+                return UserType.Vice;
+
+            if (roleNames.Any(role => role == RoleNames.Secretary))
+                return UserType.Secretary;
+
+            return UserType.Employee;
         }
     }
 }
