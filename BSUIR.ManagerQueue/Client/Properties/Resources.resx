@@ -120,6 +120,15 @@
   <data name="AccountTabName" xml:space="preserve">
     <value>My Account</value>
   </data>
+  <data name="AddButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddSecretaryLabel" xml:space="preserve">
+    <value>Add a secretary</value>
+  </data>
+  <data name="AccountsAdministrationTabName" xml:space="preserve">
+    <value>Accounts Administration</value>
+  </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Manager Queue</value>
   </data>
@@ -134,6 +143,9 @@
   </data>
   <data name="ConnectionFailedExceptionMessage" xml:space="preserve">
     <value>Unable to connect to the server. Please check your network connection or try again later</value>
+  </data>
+  <data name="CurrentSecretariesLabel" xml:space="preserve">
+    <value>Current secretaries:</value>
   </data>
   <data name="EmployeeRoleName" xml:space="preserve">
     <value>Employee</value>
@@ -150,11 +162,17 @@
   <data name="LastNameFieldLabel" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="ManagedQueueTabNameTemplate" xml:space="preserve">
+    <value>Queue - {0}</value>
+  </data>
   <data name="ManagerNameColumnHeader" xml:space="preserve">
     <value>Manager name</value>
   </data>
   <data name="ManagerRoleName" xml:space="preserve">
     <value>Manager</value>
+  </data>
+  <data name="ManageSecretariesWindowTitle" xml:space="preserve">
+    <value>Manage secretaries</value>
   </data>
   <data name="MiddleNameFieldLabel" xml:space="preserve">
     <value>Middle name</value>
@@ -210,7 +228,7 @@
   <data name="RememberMeCheckBoxText" xml:space="preserve">
     <value>Remember me</value>
   </data>
-  <data name="RemoveQueueItemButtonText" xml:space="preserve">
+  <data name="RemoveButtonText" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="RevertChangesButtonName" xml:space="preserve">
@@ -221,6 +239,9 @@
   </data>
   <data name="SaveOrderButtonText" xml:space="preserve">
     <value>Save order</value>
+  </data>
+  <data name="SecretariesButtonText" xml:space="preserve">
+    <value>Secretaries</value>
   </data>
   <data name="SecretaryRoleName" xml:space="preserve">
     <value>Secretary</value>
@@ -238,7 +259,7 @@
     <value>Sign In</value>
   </data>
   <data name="UnableToCreateErrorMessageTemplate" xml:space="preserve">
-    <value>Unable to create entity'{0}'</value>
+    <value>Unable to create entity '{0}'</value>
   </data>
   <data name="UserFetchFailedExceptionMessage" xml:space="preserve">
     <value>Unable to get user information</value>
@@ -251,5 +272,14 @@
   </data>
   <data name="ViceManagerRoleName" xml:space="preserve">
     <value>Vice</value>
+  </data>
+  <data name="ChooseAccountLabel" xml:space="preserve">
+    <value>Choose an account:</value>
+  </data>
+  <data name="ChooseQueueLabel" xml:space="preserve">
+    <value>Choose a queue:</value>
+  </data>
+  <data name="QueuesAdministrationTabName" xml:space="preserve">
+    <value>Queues Administration</value>
   </data>
 </root>
