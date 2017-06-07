@@ -105,10 +105,10 @@ namespace TestAspService.Controllers
             return Ok();
         }
 
-        // PUT: api/Queue/Entry
+        // POST: api/Queue/Entry
         [HttpPost]
         [Route("Entry")]
-        public async Task<IHttpActionResult> PutEntry(AddQueueEntryModel queueItem)
+        public async Task<IHttpActionResult> PostEntry(AddQueueEntryModel queueItem)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
