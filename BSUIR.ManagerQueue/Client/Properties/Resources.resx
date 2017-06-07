@@ -126,8 +126,8 @@
   <data name="AddSecretaryLabel" xml:space="preserve">
     <value>Add a secretary</value>
   </data>
-  <data name="AdministrationTabName" xml:space="preserve">
-    <value>Administration</value>
+  <data name="AccountsAdministrationTabName" xml:space="preserve">
+    <value>Accounts Administration</value>
   </data>
   <data name="ApplicationName" xml:space="preserve">
     <value>Manager Queue</value>
@@ -272,5 +272,14 @@
   </data>
   <data name="ViceManagerRoleName" xml:space="preserve">
     <value>Vice</value>
+  </data>
+  <data name="ChooseAccountLabel" xml:space="preserve">
+    <value>Choose an account:</value>
+  </data>
+  <data name="ChooseQueueLabel" xml:space="preserve">
+    <value>Choose a queue:</value>
+  </data>
+  <data name="QueuesAdministrationTabName" xml:space="preserve">
+    <value>Queues Administration</value>
   </data>
 </root>

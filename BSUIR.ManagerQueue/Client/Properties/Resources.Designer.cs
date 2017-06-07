@@ -61,6 +61,15 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Accounts Administration.
+        /// </summary>
+        public static string AccountsAdministrationTabName {
+            get {
+                return ResourceManager.GetString("AccountsAdministrationTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на My Account.
         /// </summary>
         public static string AccountTabName {
@@ -88,15 +97,6 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Administration.
-        /// </summary>
-        public static string AdministrationTabName {
-            get {
-                return ResourceManager.GetString("AdministrationTabName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Manager Queue.
         /// </summary>
         public static string ApplicationName {
@@ -120,6 +120,24 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         public static string ChangePasswordButtonName {
             get {
                 return ResourceManager.GetString("ChangePasswordButtonName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose an account:.
+        /// </summary>
+        public static string ChooseAccountLabel {
+            get {
+                return ResourceManager.GetString("ChooseAccountLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose a queue:.
+        /// </summary>
+        public static string ChooseQueueLabel {
+            get {
+                return ResourceManager.GetString("ChooseQueueLabel", resourceCulture);
             }
         }
         
@@ -345,6 +363,15 @@ namespace BSUIR.ManagerQueue.Client.Properties {
         public static string QueueEntriesTabName {
             get {
                 return ResourceManager.GetString("QueueEntriesTabName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Queues Administration.
+        /// </summary>
+        public static string QueuesAdministrationTabName {
+            get {
+                return ResourceManager.GetString("QueuesAdministrationTabName", resourceCulture);
             }
         }
         

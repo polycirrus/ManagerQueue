@@ -131,25 +131,30 @@
     <Compile Include="ValueConverters\InvertBooleanConverter.cs" />
     <Compile Include="ValueConverters\NullOrWhitespaceToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\UserTypeToStringConverter.cs" />
+    <Compile Include="ViewModels\AccountsAdministrationViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManageSecretariesViewModel.cs" />
     <Compile Include="ViewModels\QueueEntriesViewModel.cs" />
+    <Compile Include="ViewModels\QueuesAdministrationViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
+    <Compile Include="Views\AccountsAdministrationView.xaml.cs">
+      <DependentUpon>AccountsAdministrationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AccountView.xaml.cs">
       <DependentUpon>AccountView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AdministrationView.xaml.cs">
-      <DependentUpon>AdministrationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManageSecretariesWindow.xaml.cs">
       <DependentUpon>ManageSecretariesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QueueEntriesView.xaml.cs">
       <DependentUpon>QueueEntriesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\QueuesAdministrationView.xaml.cs">
+      <DependentUpon>QueuesAdministrationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\QueueView.xaml.cs">
       <DependentUpon>QueueView.xaml</DependentUpon>
@@ -160,11 +165,11 @@
     <Compile Include="Views\SignInWindow.xaml.cs">
       <DependentUpon>SignInWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\AccountView.xaml">
+    <Page Include="Views\AccountsAdministrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AdministrationView.xaml">
+    <Page Include="Views\AccountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\QueueEntriesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\QueuesAdministrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

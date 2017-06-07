@@ -27,6 +27,10 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             {
                 account = value;
                 NotifyPropertyChanged(nameof(Account));
+
+                Positions = new[] { account.Position };
+                SelectedPosition = Positions.First();
+                SelectedUserType = account.Type;
             }
         }
 
@@ -138,19 +142,7 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         public AccountViewModel()
         {
-            account = ServiceClient.CurrentUser;
-            if (account == null)
-                return;
-
-            positions = new[] { account.Position };
-            Task.Run(() => 
-            {
-                System.Threading.Thread.Sleep(100);
-                SelectedPosition = positions.First();
-            });
-
             userTypes = new[] { UserType.Employee, UserType.Manager, UserType.Secretary, UserType.Vice };
-            selectedUserType = account.Type;
         }
     }
 }

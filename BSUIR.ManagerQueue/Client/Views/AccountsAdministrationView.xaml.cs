@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace BSUIR.ManagerQueue.Client.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AdministrationView.xaml
+    /// Логика взаимодействия для AccountsAdministrationView.xaml
     /// </summary>
-    public partial class AdministrationView : UserControl
+    public partial class AccountsAdministrationView : UserControl
     {
-        public AdministrationView()
+        public AccountsAdministrationView()
         {
             InitializeComponent();
         }
