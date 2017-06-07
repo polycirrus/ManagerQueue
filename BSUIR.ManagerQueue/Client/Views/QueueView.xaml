@@ -40,7 +40,8 @@
             <Button Content="{x:Static properties:Resources.MoveDownButtonText}" Margin="0,5,0,0" />
             <Button Content="{x:Static properties:Resources.SaveOrderButtonText}" Margin="0,5,0,0" />
             <Button Content="{x:Static properties:Resources.CancelButtonText}" Margin="0,5,0,0" />
-            <Button Content="{x:Static properties:Resources.RemoveQueueItemButtonText}" Margin="0,20,0,0" />
+            <Button Content="{x:Static properties:Resources.RemoveButtonText}" Margin="0,20,0,0" />
+            <Button Content="{x:Static properties:Resources.SecretariesButtonText}" Margin="0,20,0,0" Command="{Binding ManageSecretariesCommand, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

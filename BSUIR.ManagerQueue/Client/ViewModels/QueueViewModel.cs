@@ -1,10 +1,13 @@
-﻿using BSUIR.ManagerQueue.Client.Models;
+﻿using BSUIR.ManagerQueue.Client.Commands;
+using BSUIR.ManagerQueue.Client.Models;
+using BSUIR.ManagerQueue.Client.Views;
 using BSUIR.ManagerQueue.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
@@ -32,6 +35,8 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         #endregion
 
         #region Commands
+
+        public ICommand ManageSecretariesCommand => new AsyncDelegateCommand(ManageSecretaries);
 
         #endregion
 
@@ -76,6 +81,12 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
                     }
                 }
             };
+        }
+
+        private async Task ManageSecretaries()
+        {
+            var manageSecretariesWindow = new ManageSecretariesWindow();
+            manageSecretariesWindow.ShowDialog();
         }
     }
 }

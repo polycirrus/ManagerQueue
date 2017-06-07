@@ -105,6 +105,31 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             }
         }
 
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get
+            {
+                return isBusy;
+            }
+
+            set
+            {
+                isBusy = value;
+                NotifyPropertyChanged(nameof(IsBusy));
+                NotifyPropertyChanged(nameof(CanEditAdministratorData));
+            }
+        }
+
+        private bool canEditAdministratorData;
+        public bool CanEditAdministratorData
+        {
+            get
+            {
+                return !isBusy && ServiceClient.CurrentUser.IsAdministrator;
+            }
+        }
+
         #endregion
 
         #region Commands
