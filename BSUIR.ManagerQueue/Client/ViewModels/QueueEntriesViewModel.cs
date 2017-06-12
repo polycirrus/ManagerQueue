@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
 
-using BSUIR.ManagerQueue.Client.Models;
-using BSUIR.ManagerQueue.Data.Model;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using BSUIR.ManagerQueue.Client.Commands;
+    using BSUIR.ManagerQueue.Client.Models;
+    using BSUIR.ManagerQueue.Client.Views;
+    using BSUIR.ManagerQueue.Data.Model;
+
     public class QueueEntriesViewModel : BaseViewModel
     {
         private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
@@ -29,6 +34,8 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         #endregion
 
         #region Commands
+
+        public ICommand EnterQueueCommand => new AsyncDelegateCommand(EnterQueue);
 
         #endregion
 
@@ -73,6 +80,12 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
                     }
                 }
             };
+        }
+
+        private async Task EnterQueue()
+        {
+            var enterQueueWindow = new EnterQueueWindow();
+            enterQueueWindow.ShowDialog();
         }
     }
 }

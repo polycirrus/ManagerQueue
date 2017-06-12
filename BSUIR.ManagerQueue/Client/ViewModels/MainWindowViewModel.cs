@@ -48,7 +48,9 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
                 case Infrastructure.UserType.Manager:
                 case Infrastructure.UserType.Vice:
                     AddDemoQueueItems(user);
-                    tabs.Add(new TabItem() { Header = Resources.MyQueueTabName, Content = new QueueView() });
+                    var queueView = new QueueView();
+                    ((QueueViewModel)queueView.DataContext).QueueManager = user;
+                    tabs.Add(new TabItem() { Header = Resources.MyQueueTabName, Content = queueView });
                     break;
                 case Infrastructure.UserType.Secretary:
                     AddSecretaryManagedQueueTabs(tabs);

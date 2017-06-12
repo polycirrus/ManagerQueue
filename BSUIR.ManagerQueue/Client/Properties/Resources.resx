@@ -282,4 +282,13 @@
   <data name="QueuesAdministrationTabName" xml:space="preserve">
     <value>Queues Administration</value>
   </data>
+  <data name="EnterQueueButtonText" xml:space="preserve">
+    <value>Enter queue</value>
+  </data>
+  <data name="EnterButtonText" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="EnterQueueWindowTitle" xml:space="preserve">
+    <value>Enter queue</value>
+  </data>
 </root>
