@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -16,7 +17,6 @@ namespace TestAspService.Controllers
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Infrastructure;
     using BSUIR.ManagerQueue.Infrastructure.Models;
-    using System.Web.Http.Description;
 
     [Authorize]
     public class QueueController : ApiController
@@ -161,6 +161,7 @@ namespace TestAspService.Controllers
                             if (++currentSliceCount >= sliceSize)
                             {
                                 queueItem.Order = item.Order;
+                                break;
                             }
                         }
                         else

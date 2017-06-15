@@ -15,19 +15,23 @@ namespace TestAspService.Controllers
     using BSUIR.ManagerQueue.Data.Model;
     using BSUIR.ManagerQueue.Infrastructure.Models;
     using BSUIR.ManagerQueue.Infrastructure;
+    using BSUIR.ManagerQueue.Data;
+    using System.Data.Entity;
 
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private ApplicationUserManager _userManager;
+        private ApplicationDbContext dbContext;
+        private ApplicationUserManager userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager)
+        public AccountController(ApplicationDbContext dbContext, ApplicationUserManager userManager)
         {
+            DbContext = dbContext;
             UserManager = userManager;
         }
 
@@ -35,11 +39,23 @@ namespace TestAspService.Controllers
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
-                _userManager = value;
+                userManager = value;
+            }
+        }
+
+        public ApplicationDbContext DbContext
+        {
+            get
+            {
+                return dbContext ?? Request.GetOwinContext().Get<ApplicationDbContext>();
+            }
+            private set
+            {
+                dbContext = value;
             }
         }
 
@@ -140,12 +156,22 @@ namespace TestAspService.Controllers
             return user;
         }
 
+        // GET api/Account/QueueOwners
+        [Route("QueueOwners")]
+        public async Task<IEnumerable<Employee>> GetQueueOwners()
+        {
+            var roles = new[] { RoleNames.Manager, RoleNames.Vice };
+            var queueOwnersIds = await dbContext.Roles.Where(role => roles.Contains(role.Name)).SelectMany(x => x.Users)
+                .Select(userRole => userRole.UserId).ToListAsync();
+            return await Task.WhenAll(queueOwnersIds.Select(async id => StripAccount(await UserManager.FindByIdAsync(id))));
+        }
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _userManager != null)
+            if (disposing && userManager != null)
             {
-                _userManager.Dispose();
-                _userManager = null;
+                userManager.Dispose();
+                userManager = null;
             }
 
             base.Dispose(disposing);
@@ -185,6 +211,12 @@ namespace TestAspService.Controllers
             }
 
             return null;
+        }
+
+        private Employee StripAccount(Employee account)
+        {
+            account.PasswordHash = null;
+            return account;
         }
 
         #endregion

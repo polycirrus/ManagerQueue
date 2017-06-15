@@ -130,6 +130,7 @@
     <Compile Include="ValueConverters\DataGridCanMoveUpConverter.cs" />
     <Compile Include="ValueConverters\InvertBooleanConverter.cs" />
     <Compile Include="ValueConverters\NullOrWhitespaceToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\NullToBoolConverter.cs" />
     <Compile Include="ValueConverters\UserTypeToStringConverter.cs" />
     <Compile Include="ViewModels\AccountsAdministrationViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />

@@ -20,14 +20,26 @@ namespace BSUIR.ManagerQueue.Client.Models
 
         private static class ResourceUri
         {
-            public class Account
+            public static class Account
             {
                 public static readonly string Base = "/api/Account";
                 public static readonly string Register = Base + "/Register";
+                public static readonly string QueueOwners = Base + "/QueueOwners";
+            }
+
+            public static class Queue
+            {
+                public static readonly string Base = "/api/Queue";
+                public static readonly string Entry = "/api/Queue/Entry";
             }
 
             public static readonly string Token = "/Token";
             public static readonly string Position = "/api/Position";
+        }
+
+        private static class Parameters
+        {
+            public static readonly string Id = "id";
         }
 
         private static readonly string ServiceUriSettingName = "ServiceUri";
@@ -122,6 +134,11 @@ namespace BSUIR.ManagerQueue.Client.Models
             }
         }
 
+        public async Task<IEnumerable<Employee>> GetQueueOwners()
+        {
+            return await Get<IEnumerable<Employee>>(ResourceUri.Account.QueueOwners);
+        }
+
         #endregion
 
         #region Position
@@ -141,6 +158,20 @@ namespace BSUIR.ManagerQueue.Client.Models
             {
                 throw new RequestFailedException(string.Format(Resources.UnableToCreateErrorMessageTemplate, Resources.PositionFieldLabel), exception);
             }
+        }
+
+        #endregion
+
+        #region Queue
+
+        public async Task<IEnumerable<QueueItem>> Get(int id)
+        {
+            return await Get<IEnumerable<QueueItem>>($"{ResourceUri.Queue.Base}?{Parameters.Id}={id}");
+        }
+
+        public async Task AddEntry(AddQueueEntryModel model)
+        {
+            await Post(ResourceUri.Queue.Entry, model);
         }
 
         #endregion

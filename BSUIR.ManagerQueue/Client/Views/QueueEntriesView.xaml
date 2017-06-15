@@ -13,13 +13,23 @@
     </UserControl.DataContext>
     <UserControl.Resources>
         <ValueConverters:UserTypeToStringConverter x:Key="userTypeToStringConverter" />
+        <ValueConverters:InvertBooleanConverter x:Key="invertBooleanConverter" />
     </UserControl.Resources>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                    <Setter Property="Cursor" Value="Wait" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
     <Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="130"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False">
+        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding ServiceClient.CurrentUser.ForeignQueueEntries}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedQueueItem}" SelectionMode="Single" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static properties:Resources.ManagerNameColumnHeader}" Width="*" Binding="{Binding Manager.Name}"/>
                 <DataGridTextColumn Header="Order" Binding="{Binding Order}" SortDirection="Ascending">
@@ -32,8 +42,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
-            <Button Content="{x:Static properties:Resources.ExitQueueButtonText}" />
-            <Button Content="{x:Static properties:Resources.EnterQueueButtonText}" Margin="0,5,0,0" Command="{Binding EnterQueueCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.ExitQueueButtonText}" Command="{Binding ExitQueueCommand, Mode=OneWay}" IsEnabled="{Binding IsExitQueueEnabled, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.EnterQueueButtonText}" Margin="0,5,0,0" Command="{Binding EnterQueueCommand, Mode=OneWay}" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}" />
         </StackPanel>
     </Grid>
 </UserControl>

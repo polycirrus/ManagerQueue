@@ -5,6 +5,7 @@ using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using System;
     using BSUIR.ManagerQueue.Client.Commands;
     using BSUIR.ManagerQueue.Client.Models;
     using BSUIR.ManagerQueue.Client.Views;
@@ -12,22 +13,47 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
     public class QueueEntriesViewModel : BaseViewModel
     {
-        private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
+        public static ServiceClient ServiceClient => ServiceClient.Instance.Value;
 
         #region Properties
 
-        private IEnumerable<QueueItem> queueItems;
-        public IEnumerable<QueueItem> QueueItems
+        private QueueItem selectedQueueItem;
+        public QueueItem SelectedQueueItem
         {
             get
             {
-                return queueItems;
+                return selectedQueueItem;
             }
 
             set
             {
-                queueItems = value;
-                NotifyPropertyChanged(nameof(QueueItems));
+                selectedQueueItem = value;
+                NotifyPropertyChanged(nameof(SelectedQueueItem));
+                NotifyPropertyChanged(nameof(IsExitQueueEnabled));
+            }
+        }
+
+        public bool IsExitQueueEnabled
+        {
+            get
+            {
+                return !isBusy && SelectedQueueItem != null;
+            }
+        }
+
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get
+            {
+                return isBusy;
+            }
+
+            set
+            {
+                isBusy = value;
+                NotifyPropertyChanged(nameof(IsBusy));
+                NotifyPropertyChanged(nameof(IsExitQueueEnabled));
             }
         }
 
@@ -37,55 +63,23 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         public ICommand EnterQueueCommand => new AsyncDelegateCommand(EnterQueue);
 
+        public ICommand ExitQueueCommand => new AsyncDelegateCommand(ExitQueue);
+
         #endregion
 
         public QueueEntriesViewModel()
         {
-            queueItems = new[]
-            {
-                new QueueItem()
-                {
-                    Id = 0,
-                    Order = 0,
-                    Manager = new Employee()
-                    {
-                        FirstName = "John",
-                        LastName = "Doe",
-                        Position = new Position() { JobTitle = "Chief Executive Officer" },
-                        Type = Infrastructure.UserType.Manager
-                    }
-                },
-                new QueueItem()
-                {
-                    Id = 2,
-                    Order = 1,
-                    Manager = new Employee()
-                    {
-                        FirstName = "Jack",
-                        LastName = "Smith",
-                        Position = new Position() { JobTitle = "Janitor" },
-                        Type = Infrastructure.UserType.Employee
-                    }
-                },
-                new QueueItem()
-                {
-                    Id = 1,
-                    Order = 2,
-                    Manager = new Employee()
-                    {
-                        FirstName = "Jane",
-                        LastName = "Doe",
-                        Position = new Position() { JobTitle = "Chief Financial Officer" },
-                        Type = Infrastructure.UserType.Manager
-                    }
-                }
-            };
         }
 
         private async Task EnterQueue()
         {
             var enterQueueWindow = new EnterQueueWindow();
             enterQueueWindow.ShowDialog();
+        }
+
+        private async Task ExitQueue()
+        {
+            throw new NotImplementedException();
         }
     }
 }
