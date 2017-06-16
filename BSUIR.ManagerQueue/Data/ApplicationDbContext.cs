@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BSUIR.ManagerQueue.Data
 {
-    using Infrastructure;
     using Model;
 
     public class ApplicationDbContext : IdentityDbContext<Employee, Role, int, UserLogin, UserRole, UserClaim>
@@ -13,9 +12,8 @@ namespace BSUIR.ManagerQueue.Data
         public virtual DbSet<QueueItem> Queue { get; set; }
 
         public ApplicationDbContext()
-            : base()
         {
-            Database.SetInitializer(new Initializer());
+            Database.SetInitializer(new DemoDataInitializer());
         }
 
         public static ApplicationDbContext Create() => new ApplicationDbContext();
@@ -49,17 +47,6 @@ namespace BSUIR.ManagerQueue.Data
                     config.MapRightKey("ManagerId");
                     config.ToTable("QueueSecretary");
                 });
-        }
-    }
-
-    public class Initializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
-    {
-        protected override void Seed(ApplicationDbContext context)
-        {
-            context.Roles.Add(new Role() { Name = RoleNames.Secretary });
-            context.Roles.Add(new Role() { Name = RoleNames.Vice });
-            context.Roles.Add(new Role() { Name = RoleNames.Manager });
-            context.Roles.Add(new Role() { Name = RoleNames.Administrator });
         }
     }
 }
