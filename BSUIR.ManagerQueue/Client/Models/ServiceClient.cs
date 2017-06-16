@@ -109,6 +109,11 @@ namespace BSUIR.ManagerQueue.Client.Models
 
             HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", TokenInfo.AccessToken);
 
+            await UpdateCurrentUser();
+        }
+
+        public async Task UpdateCurrentUser()
+        {
             try
             {
                 CurrentUser = await Get<Employee>(ResourceUri.Account.Base);
@@ -172,6 +177,21 @@ namespace BSUIR.ManagerQueue.Client.Models
         public async Task AddEntry(AddQueueEntryModel model)
         {
             await Post(ResourceUri.Queue.Entry, model);
+        }
+
+        public async Task DeleteEntry(int queueItemId)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                response = await HttpClient.DeleteAsync($"{ResourceUri.Queue.Entry}/{queueItemId}");
+            }
+            catch (HttpRequestException exception)
+            {
+                throw new ServiceCommunicationException(Resources.ConnectionFailedExceptionMessage, exception);
+            }
+
+            response.EnsureSuccessStatusCode();
         }
 
         #endregion

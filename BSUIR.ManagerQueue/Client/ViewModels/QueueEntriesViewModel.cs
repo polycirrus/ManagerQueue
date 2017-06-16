@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
-    using System;
     using BSUIR.ManagerQueue.Client.Commands;
     using BSUIR.ManagerQueue.Client.Models;
     using BSUIR.ManagerQueue.Client.Views;
@@ -16,6 +14,8 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         public static ServiceClient ServiceClient => ServiceClient.Instance.Value;
 
         #region Properties
+
+        public IEnumerable<QueueItem> QueueItems => ServiceClient.CurrentUser.ForeignQueueEntries;
 
         private QueueItem selectedQueueItem;
         public QueueItem SelectedQueueItem
@@ -79,7 +79,11 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         private async Task ExitQueue()
         {
-            throw new NotImplementedException();
+            IsBusy = true;
+            await ServiceClient.DeleteEntry(SelectedQueueItem.Id);
+            await ServiceClient.UpdateCurrentUser();
+            NotifyPropertyChanged(nameof(QueueItems));
+            IsBusy = false;
         }
     }
 }

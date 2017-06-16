@@ -19,6 +19,7 @@ namespace TestAspService.Controllers
     using BSUIR.ManagerQueue.Infrastructure.Models;
 
     [Authorize]
+    [Route("Queue")]
     public class QueueController : ApiController
     {
         private ApplicationDbContext dbContext;
@@ -63,7 +64,7 @@ namespace TestAspService.Controllers
         public async Task<IEnumerable<QueueItem>> Get()
         {
             var userId = User.Identity.GetUserId<int>();
-            return await dbContext.Queue.Where(queueItem => queueItem.ManagerId == userId).ToArrayAsync();
+            return await DbContext.Queue.Where(queueItem => queueItem.ManagerId == userId).ToArrayAsync();
         }
 
         // GET: api/Queue/5
@@ -75,7 +76,7 @@ namespace TestAspService.Controllers
             if (!await UserHasAccessToQueue(userId, id))
                 return Unauthorized();
 
-            return Ok(await dbContext.Queue.Where(queueItem => queueItem.ManagerId == id).ToArrayAsync());
+            return Ok(await DbContext.Queue.Where(queueItem => queueItem.ManagerId == id).ToArrayAsync());
         }
 
         // PUT: api/Queue/5
@@ -92,7 +93,7 @@ namespace TestAspService.Controllers
             if (!await UserHasAccessToQueue(userId, queueId))
                 return Unauthorized();
 
-            var originalQueue = await dbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).OrderBy(queueItem => queueItem.EmployeeId).ToArrayAsync();
+            var originalQueue = await DbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).OrderBy(queueItem => queueItem.EmployeeId).ToArrayAsync();
             if (originalQueue.Length != queueItems.Count())
                 return BadRequest();
 
@@ -101,13 +102,13 @@ namespace TestAspService.Controllers
                 return BadRequest();
 
             originalQueue.Zip(queueItems.Select(queueItem => queueItem.Order), (original, order) => original.Order = order);
-            await dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
             return Ok();
         }
 
         // POST: api/Queue/Entry
         [HttpPost]
-        [Route("Entry")]
+        [Route("api/Queue/Entry")]
         public async Task<IHttpActionResult> PostEntry(AddQueueEntryModel queueItem)
         {
             if (!ModelState.IsValid)
@@ -129,6 +130,30 @@ namespace TestAspService.Controllers
                 return BadRequest();
 
             return Ok(await AddQueueEntry(queueManager, entrant));
+        }
+
+        // DELETE: api/Queue/Entry/5
+        [HttpDelete]
+        [Route("api/Queue/Entry/{id}")]
+        public async Task<IHttpActionResult> DeleteEntry(int id)
+        {
+            var item = await DbContext.Queue.FindAsync(id);
+            if (item == null)
+                return BadRequest();
+
+            var queue = await DbContext.Queue
+                .Where(queueItem => queueItem.ManagerId == item.ManagerId && queueItem.Order > item.Order)
+                .OrderBy(queueItem => queueItem.Order)
+                .ToArrayAsync();
+
+            foreach (var queueItem in queue)
+                queueItem.Order -= 1;
+
+            DbContext.Queue.Remove(item);
+
+            await DbContext.SaveChangesAsync();
+
+            return Ok();
         }
 
         private async Task<QueueItem> AddQueueEntry(Employee queueManager, Employee entrant)
@@ -173,8 +198,8 @@ namespace TestAspService.Controllers
             for (int i = queueItem.Order + 1; i < queue.Length; i++)
                 queue[i].Order += 1;
 
-            dbContext.Queue.Add(queueItem);
-            await dbContext.SaveChangesAsync();
+            DbContext.Queue.Add(queueItem);
+            await DbContext.SaveChangesAsync();
             return queueItem;
         }
 

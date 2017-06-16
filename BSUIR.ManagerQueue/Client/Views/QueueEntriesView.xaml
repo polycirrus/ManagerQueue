@@ -29,7 +29,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="130"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding ServiceClient.CurrentUser.ForeignQueueEntries}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedQueueItem}" SelectionMode="Single" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}">
+        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedQueueItem}" SelectionMode="Single" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}" CanUserResizeRows="False" IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static properties:Resources.ManagerNameColumnHeader}" Width="*" Binding="{Binding Manager.Name}"/>
                 <DataGridTextColumn Header="Order" Binding="{Binding Order}" SortDirection="Ascending">
