@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     using BSUIR.ManagerQueue.Client.Models;
     using BSUIR.ManagerQueue.Data.Model;
     using Commands;
-    using System.Windows.Input;
 
     public class EnterQueueViewModel : BaseViewModel
     {

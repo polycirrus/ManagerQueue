@@ -42,7 +42,7 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
             set
             {
-                queueItems = value;
+                queueItems = value.OrderBy(x => x.Order).ToList();
                 NotifyPropertyChanged(nameof(QueueItems));
                 NotifyPropertyChanged(nameof(HasUnsavedOrderChanges));
                 NotifyPropertyChanged(nameof(CanMoveUp));
