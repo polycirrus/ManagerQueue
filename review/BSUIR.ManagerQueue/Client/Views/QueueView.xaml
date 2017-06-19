@@ -1,0 +1,47 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
+    xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
+    xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"        
+    x:Class="BSUIR.ManagerQueue.Client.Views.QueueView"
+    mc:Ignorable="d" 
+    d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.DataContext>
+        <ViewModels:QueueViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ValueConverters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+        <ValueConverters:UserTypeToStringConverter x:Key="userTypeToStringConverter" />
+    </UserControl.Resources>
+    <Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="130"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False" CanUserSortColumns="False" CanUserAddRows="False" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Order" Binding="{Binding Order}" SortDirection="Ascending">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static properties:Resources.NameFieldLabel}" Width="*" Binding="{Binding Employee.Name}"/>
+                <DataGridTextColumn Header="{x:Static properties:Resources.UserTypeFieldLabel}" Binding="{Binding Employee.Type, Converter={StaticResource userTypeToStringConverter}}" />
+                <DataGridTextColumn Header="{x:Static properties:Resources.PositionFieldLabel}" Width="*" Binding="{Binding Employee.Position.JobTitle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
+            <Button Content="{x:Static properties:Resources.MoveUpButtonText}" IsEnabled="{Binding CanMoveUp, Mode=OneWay}" Command="{Binding MoveUpCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.MoveDownButtonText}" Margin="0,5,0,0" IsEnabled="{Binding CanMoveDown, Mode=OneWay}" Command="{Binding MoveDownCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.SaveOrderButtonText}" Margin="0,5,0,0" IsEnabled="{Binding CanSaveOrResetOrder, Mode=OneWay}" Command="{Binding SaveOrderCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.CancelButtonText}" Margin="0,5,0,0" IsEnabled="{Binding CanSaveOrResetOrder, Mode=OneWay}" Command="{Binding ResetOrderCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.RemoveButtonText}" Margin="0,20,0,0" IsEnabled="{Binding CanRemoveItem, Mode=OneWay}" Command="{Binding RemoveItemCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.SecretariesButtonText}" Margin="0,20,0,0" Command="{Binding ManageSecretariesCommand, Mode=OneWay}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
