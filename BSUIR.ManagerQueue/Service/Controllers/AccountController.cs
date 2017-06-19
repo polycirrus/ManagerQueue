@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace BSUIR.ManagerQueue.Service.Controllers
     using BSUIR.ManagerQueue.Infrastructure.Models;
     using BSUIR.ManagerQueue.Infrastructure;
     using BSUIR.ManagerQueue.Data;
-    using System.Data.Entity;
 
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -156,14 +156,27 @@ namespace BSUIR.ManagerQueue.Service.Controllers
             return user;
         }
 
+        // GET api/Account/All
+        [Route("All")]
+        [Authorize(Roles = RoleNames.Administrator)]
+        public async Task<IEnumerable<Employee>> GetAll()
+        {
+            return (await UserManager.Users.ToArrayAsync()).Select(user => StripAccount(user));
+        }
+
         // GET api/Account/QueueOwners
         [Route("QueueOwners")]
         public async Task<IEnumerable<Employee>> GetQueueOwners()
         {
             var roles = new[] { RoleNames.Manager, RoleNames.Vice };
-            var queueOwnersIds = await dbContext.Roles.Where(role => roles.Contains(role.Name)).SelectMany(x => x.Users)
+            var queueOwnersIds = await DbContext.Roles.Where(role => roles.Contains(role.Name)).SelectMany(x => x.Users)
                 .Select(userRole => userRole.UserId).ToListAsync();
-            return await Task.WhenAll(queueOwnersIds.Select(async id => StripAccount(await UserManager.FindByIdAsync(id))));
+
+            var owners = new List<Employee>();
+            foreach (var ownerId in queueOwnersIds)
+                owners.Add(StripAccount(await UserManager.FindByIdAsync(ownerId)));
+
+            return owners;
         }
 
         protected override void Dispose(bool disposing)
@@ -215,6 +228,7 @@ namespace BSUIR.ManagerQueue.Service.Controllers
 
         private Employee StripAccount(Employee account)
         {
+            account.Type = ApplicationUserManager.GetUserTypeFromRoles(UserManager.GetRoles(account.Id));
             account.PasswordHash = null;
             return account;
         }

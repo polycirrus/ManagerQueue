@@ -23,6 +23,7 @@ namespace BSUIR.ManagerQueue.Client.Models
             public static class Account
             {
                 public static readonly string Base = "/api/Account";
+                public static readonly string All = Base + "/All";
                 public static readonly string Register = Base + "/Register";
                 public static readonly string QueueOwners = Base + "/QueueOwners";
             }
@@ -142,6 +143,11 @@ namespace BSUIR.ManagerQueue.Client.Models
         public async Task<IEnumerable<Employee>> GetQueueOwners()
         {
             return await Get<IEnumerable<Employee>>(ResourceUri.Account.QueueOwners);
+        }
+
+        public async Task<IEnumerable<Employee>> GetAllAccounts()
+        {
+            return await Get<IEnumerable<Employee>>(ResourceUri.Account.All);
         }
 
         #endregion
