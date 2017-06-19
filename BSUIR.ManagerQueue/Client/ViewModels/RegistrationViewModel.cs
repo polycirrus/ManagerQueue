@@ -16,8 +16,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     public class RegistrationViewModel : BaseViewModel
     {
-        private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
 
         private string firstName;
@@ -107,21 +105,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             {
                 confirmPasswordBox = value;
                 NotifyPropertyChanged(nameof(ConfirmPasswordBox));
-            }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get
-            {
-                return isBusy;
-            }
-
-            set
-            {
-                isBusy = value;
-                NotifyPropertyChanged(nameof(IsBusy));
             }
         }
 
@@ -229,8 +212,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         public RegistrationViewModel()
         {
-            Task.Run(new Action(LoadPositions));
-
             userTypes = new[]
             {
                 new Tuple<UserType, string>(UserType.Employee, Resources.EmployeeRoleName),
@@ -239,6 +220,12 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
                 new Tuple<UserType, string>(UserType.Manager, Resources.ManagerRoleName)
             };
             selectedUserType = userTypes.First();
+        }
+
+        protected override async Task InitializeAsync()
+        {
+            await LoadPositions();
+            await base.InitializeAsync();
         }
 
         private async Task Register()
@@ -291,7 +278,7 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             RegistrationFinished?.Invoke(this, new RegistrationFinishedEventArgs(false));
         }
 
-        private async void LoadPositions()
+        private async Task LoadPositions()
         {
             IEnumerable<Position> positions;
             try

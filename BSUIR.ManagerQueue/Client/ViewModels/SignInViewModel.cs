@@ -16,8 +16,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     public class SignInViewModel : BaseViewModel
     {
-        private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
 
         private string userName;
@@ -63,21 +61,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             {
                 rememberMe = value;
                 NotifyPropertyChanged(nameof(RememberMe));
-            }
-        }
-
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get
-            {
-                return isBusy;
-            }
-
-            set
-            {
-                isBusy = value;
-                NotifyPropertyChanged(nameof(IsBusy));
             }
         }
 

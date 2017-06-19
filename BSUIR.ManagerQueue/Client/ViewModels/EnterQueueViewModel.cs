@@ -13,8 +13,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
     public class EnterQueueViewModel : BaseViewModel
     {
-        public static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
 
         private IEnumerable<Employee> queues;
@@ -52,22 +50,20 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         {
             get
             {
-                return !isBusy && SelectedQueue != null;
+                return !IsBusy && SelectedQueue != null;
             }
         }
 
-        private bool isBusy;
-        public bool IsBusy
+        public override bool IsBusy
         {
             get
             {
-                return isBusy;
+                return base.IsBusy;
             }
 
             set
             {
-                isBusy = value;
-                NotifyPropertyChanged(nameof(IsBusy));
+                base.IsBusy = value;
                 NotifyPropertyChanged(nameof(IsEnterQueueEnabled));
             }
         }
@@ -80,14 +76,10 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         #endregion
 
-        public EnterQueueViewModel()
+        protected override async Task InitializeAsync()
         {
-            IsBusy = true;
-            Task.Run(async () =>
-            {
-                Queues = await ServiceClient.GetQueueOwners();
-                IsBusy = false;
-            });
+            Queues = await ServiceClient.GetQueueOwners();
+            await base.InitializeAsync();
         }
 
         private async Task EnterQueue()
