@@ -48,14 +48,17 @@ namespace BSUIR.ManagerQueue.Data
             var it2 = CreateUser("Amanda", "Anderson", itPosition, "it2");
             var it3 = CreateUser("Lisa", "Thomas", itPosition, "it3");
 
+            var order = 0;
             foreach (var employee in new[] {sales1, sales2, sales3}.Concat(clerks).RandomSubset(8))
-                context.Queue.Add(new QueueItem() {Manager = salesHead, Employee = employee});
+                context.Queue.Add(new QueueItem() {Manager = salesHead, Employee = employee, Order = order++});
 
+            order = 0;
             foreach (var employee in new[] {rd1, rd2, rd3}.Concat(clerks).RandomSubset(8))
-                context.Queue.Add(new QueueItem() { Manager = rdHead, Employee = employee });
+                context.Queue.Add(new QueueItem() { Manager = rdHead, Employee = employee, Order = order++ });
 
+            order = 0;
             foreach (var employee in new[] {it1, it2, it3}.Concat(clerks).RandomSubset(8))
-                context.Queue.Add(new QueueItem() { Manager = itHead, Employee = employee });
+                context.Queue.Add(new QueueItem() { Manager = itHead, Employee = employee, Order = order++ });
 
             var employees = new[]
             {
