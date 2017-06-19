@@ -68,6 +68,7 @@ namespace BSUIR.ManagerQueue.Service.Controllers
         }
 
         // GET: api/Queue/5
+        [Route("api/Queue/{id}")]
         [Authorize(Roles = RoleNames.Manager + ", " + RoleNames.Vice + ", " + RoleNames.Secretary + ", " + RoleNames.Administrator)]
         [ResponseType(typeof(IEnumerable<QueueItem>))]
         public async Task<IHttpActionResult> Get(int id)
@@ -76,17 +77,18 @@ namespace BSUIR.ManagerQueue.Service.Controllers
             if (!await UserHasAccessToQueue(userId, id))
                 return Unauthorized();
 
-            return Ok(await DbContext.Queue.Where(queueItem => queueItem.ManagerId == id).ToArrayAsync());
+            return Ok(await DbContext.Queue.Where(queueItem => queueItem.ManagerId == id).OrderBy(queueItem => queueItem.Order).ToArrayAsync());
         }
 
-        // PUT: api/Queue/5
-        public async Task<IHttpActionResult> Put(int queueId, [FromBody]IEnumerable<QueueItem> queueItems)
+        // POST: api/Queue/5
+        [Route("api/Queue/{queueId}")]
+        public async Task<IHttpActionResult> Post(int queueId, [FromBody]IEnumerable<QueueItem> queueItems)
         {
             var queueIds = queueItems.Select(queueItem => queueItem.ManagerId).Distinct().ToArray();
             if (queueIds.Length != 1 || queueIds[0] != queueId)
                 return BadRequest();
 
-            if (!Enumerable.SequenceEqual(queueItems.OrderBy(queueItem => queueItem.Order).Select(queueItem => queueItem.Order), Enumerable.Range(0, queueItems.Count() - 1)))
+            if (!Enumerable.SequenceEqual(queueItems.OrderBy(queueItem => queueItem.Order).Select(queueItem => queueItem.Order), Enumerable.Range(0, queueItems.Count())))
                 return BadRequest();
 
             var userId = User.Identity.GetUserId<int>();
@@ -97,13 +99,14 @@ namespace BSUIR.ManagerQueue.Service.Controllers
             if (originalQueue.Length != queueItems.Count())
                 return BadRequest();
 
-            queueItems = queueItems.OrderBy(queueItem => queueItem.Employee);
+            queueItems = queueItems.OrderBy(queueItem => queueItem.EmployeeId);
             if (!Enumerable.SequenceEqual(queueItems.Select(queueItem => queueItem.EmployeeId), originalQueue.Select(queueItem => queueItem.EmployeeId)))
                 return BadRequest();
 
             originalQueue.Zip(queueItems.Select(queueItem => queueItem.Order), (original, order) => original.Order = order);
             await DbContext.SaveChangesAsync();
-            return Ok();
+
+            return Ok(await DbContext.Queue.Where(queueItem => queueItem.ManagerId == queueId).OrderBy(queueItem => queueItem.Order).ToArrayAsync());
         }
 
         // POST: api/Queue/Entry

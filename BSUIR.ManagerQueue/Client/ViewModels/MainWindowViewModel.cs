@@ -13,8 +13,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
 
         private IEnumerable<TabItem> tabs;
@@ -47,7 +45,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             {
                 case Infrastructure.UserType.Manager:
                 case Infrastructure.UserType.Vice:
-                    AddDemoQueueItems(user);
                     var queueView = new QueueView();
                     ((QueueViewModel)queueView.DataContext).QueueManager = user;
                     tabs.Add(new TabItem() { Header = Resources.MyQueueTabName, Content = queueView });
@@ -76,49 +73,6 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         {
             foreach (var managedQueue in ServiceClient.CurrentUser.ManagedQueues)
                 tabs.Add(new TabItem() { Header = string.Format(Resources.ManagedQueueTabNameTemplate, managedQueue.Name), Content = new QueueView() });
-        }
-
-        private void AddDemoQueueItems(Employee user)
-        {
-            user.OwnQueueEntries = new[]
-            {
-                new QueueItem()
-                {
-                    Id = 0,
-                    Order = 0,
-                    Employee = new Employee()
-                    {
-                        FirstName = "John",
-                        LastName = "Doe",
-                        Position = new Position() { JobTitle = "Chief Executive Officer" },
-                        Type = Infrastructure.UserType.Manager
-                    }
-                },
-                new QueueItem()
-                {
-                    Id = 2,
-                    Order = 1,
-                    Employee = new Employee()
-                    {
-                        FirstName = "Jack",
-                        LastName = "Smith",
-                        Position = new Position() { JobTitle = "Janitor" },
-                        Type = Infrastructure.UserType.Employee
-                    }
-                },
-                new QueueItem()
-                {
-                    Id = 1,
-                    Order = 2,
-                    Employee = new Employee()
-                    {
-                        FirstName = "Jane",
-                        LastName = "Doe",
-                        Position = new Position() { JobTitle = "Chief Financial Officer" },
-                        Type = Infrastructure.UserType.Manager
-                    }
-                }
-            };
         }
     }
 }

@@ -169,9 +169,14 @@ namespace BSUIR.ManagerQueue.Client.Models
 
         #region Queue
 
-        public async Task<IEnumerable<QueueItem>> Get(int id)
+        public async Task<IEnumerable<QueueItem>> GetQueue(int id)
         {
-            return await Get<IEnumerable<QueueItem>>($"{ResourceUri.Queue.Base}?{Parameters.Id}={id}");
+            return await Get<IEnumerable<QueueItem>>($"{ResourceUri.Queue.Base}/{id}");
+        }
+
+        public async Task<IEnumerable<QueueItem>> SaveQueue(int id, IEnumerable<QueueItem> queue)
+        {
+            return await Post($"{ResourceUri.Queue.Base}/{id}", queue);
         }
 
         public async Task AddEntry(AddQueueEntryModel model)
