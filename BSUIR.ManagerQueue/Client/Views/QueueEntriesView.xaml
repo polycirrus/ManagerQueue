@@ -6,11 +6,14 @@
     xmlns:local="clr-namespace:BSUIR.ManagerQueue.Client.Views"
     xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
     xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
-    xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"        
+    xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="600">
-    <UserControl.DataContext>
-        <ViewModels:QueueEntriesViewModel/>
-    </UserControl.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
         <ValueConverters:UserTypeToStringConverter x:Key="userTypeToStringConverter" />
         <ValueConverters:InvertBooleanConverter x:Key="invertBooleanConverter" />
@@ -32,7 +35,7 @@
         <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedQueueItem}" SelectionMode="Single" IsEnabled="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}" CanUserResizeRows="False" IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static properties:Resources.ManagerNameColumnHeader}" Width="*" Binding="{Binding Manager.Name}"/>
-                <DataGridTextColumn Header="Order" Binding="{Binding Order}" SortDirection="Ascending">
+                <DataGridTextColumn Header="Order" Binding="{Binding Order}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />

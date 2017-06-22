@@ -5,13 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
     xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
-    xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"        
+    xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"   
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     x:Class="BSUIR.ManagerQueue.Client.Views.QueueView"
     mc:Ignorable="d" 
     d:DesignHeight="300" d:DesignWidth="600">
-    <UserControl.DataContext>
-        <ViewModels:QueueViewModel/>
-    </UserControl.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
         <ValueConverters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
         <ValueConverters:UserTypeToStringConverter x:Key="userTypeToStringConverter" />
@@ -21,7 +24,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="130"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False" CanUserSortColumns="False" CanUserAddRows="False" SelectedItem="{Binding SelectedItem}" IsReadOnly="True">
+        <DataGrid x:Name="dataGrid" Grid.Column="0" Margin="5" ItemsSource="{Binding QueueItems}" AutoGenerateColumns="False" CanUserSortColumns="False" CanUserAddRows="False" SelectedItem="{Binding SelectedItem}" IsReadOnly="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Order" Binding="{Binding Order}" SortDirection="Ascending">
                     <DataGridTextColumn.ElementStyle>

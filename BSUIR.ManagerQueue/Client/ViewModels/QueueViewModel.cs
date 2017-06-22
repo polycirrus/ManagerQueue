@@ -1,19 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     using BSUIR.ManagerQueue.Client.Commands;
+    using BSUIR.ManagerQueue.Client.Properties;
     using BSUIR.ManagerQueue.Client.Views;
     using BSUIR.ManagerQueue.Data.Model;
 
     public class QueueViewModel : BaseViewModel
     {
         #region Properties
+
+        public override string Title
+        {
+            get
+            {
+                if (QueueManager == ServiceClient.CurrentUser)
+                    return Resources.MyQueueTabName;
+
+                if (QueueManager == null)
+                    return string.Empty;
+
+                return string.Format(Resources.ManagedQueueTabNameTemplate, QueueManager.Name);
+            }
+        }
 
         private Employee queueManager;
         public Employee QueueManager
@@ -28,7 +41,7 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
                 queueManager = value;
                 NotifyPropertyChanged(nameof(QueueManager));
 
-                QueueItems = queueManager.OwnQueueEntries;
+                QueueItems = queueManager.OwnQueueEntries.Select(queueItem => CloneItem(queueItem));
             }
         }
 
@@ -71,7 +84,8 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
             }
         }
 
-        public bool HasUnsavedOrderChanges => !queueItems.SequenceEqual(queueManager.OwnQueueEntries);
+        public bool HasUnsavedOrderChanges => !queueItems.Select(x => x.EmployeeId)
+            .SequenceEqual(queueManager.OwnQueueEntries.OrderBy(x => x.Order).Select(x => x.EmployeeId));
 
         public bool CanMoveUp => !IsBusy && SelectedItem != null && SelectedItem.Order > 0;
 
@@ -151,6 +165,19 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         {
             var manageSecretariesWindow = new ManageSecretariesWindow();
             manageSecretariesWindow.ShowDialog();
+        }
+
+        private QueueItem CloneItem(QueueItem queueItem)
+        {
+            return new QueueItem()
+            {
+                Id = queueItem.Id,
+                Employee = queueItem.Employee,
+                EmployeeId = queueItem.EmployeeId,
+                Manager = queueItem.Manager,
+                ManagerId = queueItem.ManagerId,
+                Order = queueItem.Order
+            };
         }
     }
 }

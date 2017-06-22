@@ -15,6 +15,8 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
     {
         #region Properties
 
+        public override string Title => Properties.Resources.EnterQueueWindowTitle;
+
         private IEnumerable<Employee> queues;
         public IEnumerable<Employee> Queues
         {

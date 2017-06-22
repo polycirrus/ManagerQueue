@@ -45,6 +45,7 @@
     <Compile Include="Models\AddQueueEntryModel.cs" />
     <Compile Include="Models\ChangePasswordBindingModel.cs" />
     <Compile Include="Models\RegisterBindingModel.cs" />
+    <Compile Include="Models\SaveAccountInfoModel.cs" />
     <Compile Include="Models\SetPasswordBindingModel.cs" />
     <Compile Include="Models\TokenGrantModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,22 +1,19 @@
-﻿using BSUIR.ManagerQueue.Client.Commands;
-using BSUIR.ManagerQueue.Client.Models;
-using BSUIR.ManagerQueue.Client.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using BSUIR.ManagerQueue.Client.Commands;
+    using BSUIR.ManagerQueue.Client.Models;
+    using BSUIR.ManagerQueue.Client.Views;
+
     public class SignInViewModel : BaseViewModel
     {
         #region Properties
+
+        public override string Title => Properties.Resources.SignInWindowTitle;
 
         private string userName;
         public string UserName

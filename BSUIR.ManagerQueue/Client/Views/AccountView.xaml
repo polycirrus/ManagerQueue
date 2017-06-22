@@ -3,19 +3,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:BSUIR.ManagerQueue.Client.Views"
     xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
     xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"
-    xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" x:Class="BSUIR.ManagerQueue.Client.Views.AccountView"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    x:Class="BSUIR.ManagerQueue.Client.Views.AccountView"
     mc:Ignorable="d" 
     d:DesignHeight="300" d:DesignWidth="600">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
+        <ValueConverters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
         <ValueConverters:NullOrWhitespaceToVisibilityConverter x:Key="nullOrWhitespaceToVisibilityConverter" />
         <ValueConverters:UserTypeToStringConverter x:Key="userTypeToStringConverter" />
     </UserControl.Resources>
-    <UserControl.DataContext>
-        <ViewModels:AccountViewModel/>
-    </UserControl.DataContext>
     <Grid Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -33,19 +36,19 @@
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="260"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="firstNameFieldLabel" Grid.Column="0" Grid.Row="0" Content="{x:Static properties:Resources.FirstNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
-            <TextBox x:Name="firstNameFieldTextBox" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding Account.FirstName}"/>
-            <Label x:Name="middleNameFieldLabel" Grid.Column="0" Grid.Row="1" Content="{x:Static properties:Resources.MiddleNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
-            <TextBox x:Name="middleNameFieldTextBox" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding Account.Middlename}"/>
-            <Label x:Name="lastNameFieldLabel" Grid.Column="0" Grid.Row="2" Content="{x:Static properties:Resources.LastNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
-            <TextBox x:Name="lastNameFieldTextBox" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding Account.LastName}"/>
+            <Label Grid.Column="0" Grid.Row="0" Content="{x:Static properties:Resources.FirstNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding FirstName}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}"/>
+            <Label Grid.Column="0" Grid.Row="1" Content="{x:Static properties:Resources.MiddleNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding MiddleName}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}"/>
+            <Label Grid.Column="0" Grid.Row="2" Content="{x:Static properties:Resources.LastNameFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="5,0" Text="{Binding LastName}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}"/>
             <Label Grid.Column="0" Grid.Row="3" Content="{x:Static properties:Resources.PositionFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
             <Grid Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="3" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" >
-                <ComboBox x:Name="positionComboBox" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Center" Width="250" IsEditable="True" ItemsSource="{Binding Positions}" SelectedItem="{Binding SelectedPosition}" Text="{Binding PositionComboBoxText}" DisplayMemberPath="JobTitle" IsEnabled="False" />
+                <ComboBox x:Name="positionComboBox" HorizontalAlignment="Center" Margin="5" VerticalAlignment="Center" Width="250" IsEditable="True" ItemsSource="{Binding Positions}" SelectedItem="{Binding SelectedPosition}" Text="{Binding PositionComboBoxText}" DisplayMemberPath="JobTitle" IsEnabled="{Binding CanEditAdministratorData, Mode=OneWay}" />
                 <TextBlock HorizontalAlignment="Center" Margin="5" VerticalAlignment="Center" Visibility="{Binding ElementName=positionComboBox, Path=Text, Converter={StaticResource nullOrWhitespaceToVisibilityConverter}}" Text="{x:Static properties:Resources.PositionComboBoxPlaceholder}" Foreground="Gray" IsHitTestVisible="False" />
             </Grid>
             <Label x:Name="userTypeFieldLabel" Grid.Column="0" Grid.Row="4" Content="{x:Static properties:Resources.UserTypeFieldLabel}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Center" Margin="5,0" ItemsSource="{Binding UserTypes}" SelectedValue="{Binding SelectedUserType}" IsEnabled="False">
+            <ComboBox Grid.Column="1" Grid.Row="4" HorizontalAlignment="Stretch" Height="23" VerticalAlignment="Center" Margin="5,0" ItemsSource="{Binding UserTypes}" SelectedValue="{Binding SelectedUserType}" IsEnabled="{Binding CanEditAdministratorData, Mode=OneWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource userTypeToStringConverter}}" />
@@ -54,9 +57,9 @@
             </ComboBox>
         </Grid>
         <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
-            <Button Content="{x:Static properties:Resources.SaveChangesButtonName}" />
-            <Button Content="{x:Static properties:Resources.RevertChangesButtonName}" Margin="0,5,0,0" />
-            <Button Content="{x:Static properties:Resources.ChangePasswordButtonName}" Margin="0,20,0,0" />
+            <Button Content="{x:Static properties:Resources.SaveChangesButtonName}" IsEnabled="{Binding CanSaveAndRevertChanges, Mode=OneWay}" Command="{Binding SaveChangesCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.RevertChangesButtonName}" Margin="0,5,0,0" IsEnabled="{Binding CanSaveAndRevertChanges, Mode=OneWay}" Command="{Binding RevertChangesCommand, Mode=OneWay}" />
+            <Button Content="{x:Static properties:Resources.ChangePasswordButtonName}" Margin="0,20,0,0" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}" Command="{Binding ChangePasswordCommand, Mode=OneWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -161,7 +161,7 @@ namespace BSUIR.ManagerQueue.Service.Controllers
         [Authorize(Roles = RoleNames.Administrator)]
         public async Task<IEnumerable<Employee>> GetAll()
         {
-            return (await UserManager.Users.ToArrayAsync()).Select(user => StripAccount(user));
+            return (await UserManager.Users.ToArrayAsync()).Select(user => PrepareAccount(user));
         }
 
         // GET api/Account/QueueOwners
@@ -174,9 +174,63 @@ namespace BSUIR.ManagerQueue.Service.Controllers
 
             var owners = new List<Employee>();
             foreach (var ownerId in queueOwnersIds)
-                owners.Add(StripAccount(await UserManager.FindByIdAsync(ownerId)));
+                owners.Add(PrepareAccount(await UserManager.FindByIdAsync(ownerId)));
 
             return owners;
+        }
+
+        // POST api/Account
+        public async Task<IHttpActionResult> Post(SaveAccountInfoModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var currentUserId = User.Identity.GetUserId<int>();
+            if (currentUserId != model.Id && !(await UserManager.IsInRoleAsync(currentUserId, RoleNames.Administrator)))
+                return Unauthorized();
+
+            var account = await UserManager.FindByIdAsync(model.Id);
+            if (account == null)
+                return BadRequest();
+
+            account.FirstName = model.FirstName;
+            account.Middlename = model.MiddleName;
+            account.LastName = model.LastName;
+
+            if (model.PositionId.HasValue)
+            {
+                var position = await DbContext.Positions.FindAsync(model.PositionId.Value);
+                if (position == null)
+                    return BadRequest();
+
+                account.PositionId = model.PositionId.Value;
+            }
+            else if (!string.IsNullOrEmpty(model.JobTitle))
+            {
+                var position = new Position() { JobTitle = model.JobTitle };
+                DbContext.Positions.Add(position);
+
+                account.PositionId = 0;
+                account.Position = position;
+            }
+            else
+                return BadRequest();
+
+            await DbContext.SaveChangesAsync();
+
+            var role = ApplicationUserManager.GetRoleFromUserType(model.Type);
+            var existingRoles = await UserManager.GetRolesAsync(account.Id);
+            var existingRole = existingRoles?.FirstOrDefault(r => r != RoleNames.Administrator);
+            if (role != existingRole)
+            {
+                if (existingRole != null)
+                    await UserManager.RemoveFromRoleAsync(account.Id, existingRole);
+
+                if (role != null)
+                    await UserManager.AddToRoleAsync(account.Id, role);
+            }
+
+            return Ok(await UserManager.FindByIdAsync(account.Id));
         }
 
         protected override void Dispose(bool disposing)
@@ -226,7 +280,7 @@ namespace BSUIR.ManagerQueue.Service.Controllers
             return null;
         }
 
-        private Employee StripAccount(Employee account)
+        private Employee PrepareAccount(Employee account)
         {
             account.Type = ApplicationUserManager.GetUserTypeFromRoles(UserManager.GetRoles(account.Id));
             account.PasswordHash = null;

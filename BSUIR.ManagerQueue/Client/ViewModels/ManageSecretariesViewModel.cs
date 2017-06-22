@@ -10,9 +10,9 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 {
     public class ManageSecretariesViewModel : BaseViewModel
     {
-        private static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
+
+        public override string Title => Properties.Resources.ManageSecretariesWindowTitle;
 
         private IEnumerable<Employee> currentSecretaries;
         public IEnumerable<Employee> CurrentSecretaries

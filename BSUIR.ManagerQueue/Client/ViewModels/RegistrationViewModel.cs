@@ -1,22 +1,24 @@
-﻿using BSUIR.ManagerQueue.Client.Commands;
-using BSUIR.ManagerQueue.Client.Models;
-using BSUIR.ManagerQueue.Client.Properties;
-using BSUIR.ManagerQueue.Data.Model;
-using BSUIR.ManagerQueue.Infrastructure;
-using BSUIR.ManagerQueue.Infrastructure.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using BSUIR.ManagerQueue.Client.Commands;
+    using BSUIR.ManagerQueue.Client.Models;
+    using BSUIR.ManagerQueue.Client.Properties;
+    using BSUIR.ManagerQueue.Data.Model;
+    using BSUIR.ManagerQueue.Infrastructure;
+    using BSUIR.ManagerQueue.Infrastructure.Models;
+
     public class RegistrationViewModel : BaseViewModel
     {
         #region Properties
+
+        public override string Title => Resources.RegistrationWindowTitle;
 
         private string firstName;
         public string FirstName

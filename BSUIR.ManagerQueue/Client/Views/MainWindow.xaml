@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIR.ManagerQueue.Client"
         xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
-        xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
+        xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels"
+        xmlns:views="clr-namespace:BSUIR.ManagerQueue.Client.Views"
         x:Class="BSUIR.ManagerQueue.Client.MainWindow"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.ApplicationName}" Height="500" Width="800">
@@ -18,7 +19,27 @@
                 <Style TargetType="TabItem">
                     <Setter Property="Padding" Value="5" />
                 </Style>
+                <DataTemplate DataType="{x:Type ViewModels:AccountViewModel}">
+                    <views:AccountView DataContext="{Binding}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type ViewModels:QueueEntriesViewModel}">
+                    <views:QueueEntriesView DataContext="{Binding}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type ViewModels:QueueViewModel}">
+                    <views:QueueView DataContext="{Binding}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type ViewModels:AccountsAdministrationViewModel}">
+                    <views:AccountsAdministrationView DataContext="{Binding}" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type ViewModels:QueuesAdministrationViewModel}">
+                    <views:QueuesAdministrationView DataContext="{Binding}" />
+                </DataTemplate>
             </TabControl.Resources>
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
             <TabControl.DataContext>
                 <ViewModels:MainWindowViewModel/>
             </TabControl.DataContext>

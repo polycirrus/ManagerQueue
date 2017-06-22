@@ -150,6 +150,11 @@ namespace BSUIR.ManagerQueue.Client.Models
             return await Get<IEnumerable<Employee>>(ResourceUri.Account.All);
         }
 
+        public async Task<Employee> SaveAccount(Employee account)
+        {
+            return await Post<Employee>(ResourceUri.Account.Base, account);
+        }
+
         #endregion
 
         #region Position

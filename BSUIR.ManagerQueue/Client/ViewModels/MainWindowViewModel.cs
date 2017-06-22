@@ -1,22 +1,18 @@
-﻿using BSUIR.ManagerQueue.Client.Models;
-using BSUIR.ManagerQueue.Client.Properties;
-using BSUIR.ManagerQueue.Client.Views;
-using BSUIR.ManagerQueue.Data.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using BSUIR.ManagerQueue.Client.Models;
+    using BSUIR.ManagerQueue.Client.Properties;
+
     public class MainWindowViewModel : BaseViewModel
     {
         #region Properties
 
-        private IEnumerable<TabItem> tabs;
-        public IEnumerable<TabItem> Tabs
+        public override string Title => Resources.ApplicationName;
+
+        private IEnumerable<BaseViewModel> tabs;
+        public IEnumerable<BaseViewModel> Tabs
         {
             get
             {
@@ -38,41 +34,32 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
         public MainWindowViewModel()
         {
-            var tabs = new List<TabItem>();
+            var tabs = new List<BaseViewModel>();
 
             var user = ServiceClient.CurrentUser;
             switch (user.Type)
             {
                 case Infrastructure.UserType.Manager:
                 case Infrastructure.UserType.Vice:
-                    var queueView = new QueueView();
-                    ((QueueViewModel)queueView.DataContext).QueueManager = user;
-                    tabs.Add(new TabItem() { Header = Resources.MyQueueTabName, Content = queueView });
+                    tabs.Add(new QueueViewModel() { QueueManager = user });
                     break;
                 case Infrastructure.UserType.Secretary:
-                    AddSecretaryManagedQueueTabs(tabs);
+                    foreach (var managedQueue in ServiceClient.CurrentUser.ManagedQueues)
+                        tabs.Add(new QueueViewModel() { QueueManager = managedQueue });
                     break;
             }
 
-            tabs.Add(new TabItem() { Header = Resources.QueueEntriesTabName, Content = new QueueEntriesView() });
-
-            var accountView = new AccountView();
-            ((AccountViewModel)accountView.DataContext).Account = ServiceClient.CurrentUser;
-            tabs.Add(new TabItem() { Header = Resources.AccountTabName, Content = accountView });
+            tabs.Add(new QueueEntriesViewModel());
+            
+            tabs.Add(new AccountViewModel() { Account = user });
 
             if (user.IsAdministrator)
             {
-                tabs.Add(new TabItem() { Header = Resources.AccountsAdministrationTabName, Content = new AccountsAdministrationView() });
-                tabs.Add(new TabItem() { Header = Resources.QueuesAdministrationTabName, Content = new QueuesAdministrationView() });
+                tabs.Add(new AccountsAdministrationViewModel());
+                tabs.Add(new QueuesAdministrationViewModel());
             }
 
             this.tabs = tabs;
-        }
-
-        private void AddSecretaryManagedQueueTabs(List<TabItem> tabs)
-        {
-            foreach (var managedQueue in ServiceClient.CurrentUser.ManagedQueues)
-                tabs.Add(new TabItem() { Header = string.Format(Resources.ManagedQueueTabNameTemplate, managedQueue.Name), Content = new QueueView() });
         }
     }
 }

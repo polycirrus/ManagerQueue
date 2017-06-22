@@ -7,9 +7,28 @@
              xmlns:properties="clr-namespace:BSUIR.ManagerQueue.Client.Properties"
              xmlns:ViewModels="clr-namespace:BSUIR.ManagerQueue.Client.ViewModels" 
              xmlns:Views="clr-namespace:BSUIR.ManagerQueue.Client.Views"
+             xmlns:ValueConverters="clr-namespace:BSUIR.ManagerQueue.Client.ValueConverters"
+            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              x:Class="BSUIR.ManagerQueue.Client.Views.AccountsAdministrationView"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                    <Setter Property="Cursor" Value="Wait" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <UserControl.Resources>
+        <ValueConverters:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    </UserControl.Resources>
     <UserControl.DataContext>
         <ViewModels:AccountsAdministrationViewModel/>
     </UserControl.DataContext>
@@ -23,7 +42,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Content="{x:Static properties:Resources.ChooseAccountLabel}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-        <ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="5" SelectedItem="{Binding DataContext.Account, ElementName=accountView}" />
-        <Views:AccountView x:Name="accountView" Grid.Row="1" Grid.ColumnSpan="2" Margin="5" BorderBrush="Gray" BorderThickness="1" />
+        <ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Name" Grid.Row="0" Grid.Column="1" Margin="5" SelectedItem="{Binding DataContext.Account, ElementName=accountView}" IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}" />
+        <Views:AccountView x:Name="accountView" DataContext="{Binding AccountViewModel}" Grid.Row="1" Grid.ColumnSpan="2" Margin="5" BorderBrush="Gray" BorderThickness="1" />
     </Grid>
 </UserControl>

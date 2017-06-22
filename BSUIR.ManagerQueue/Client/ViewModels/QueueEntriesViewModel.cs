@@ -4,6 +4,7 @@ using System.Windows.Input;
 
 namespace BSUIR.ManagerQueue.Client.ViewModels
 {
+    using System;
     using BSUIR.ManagerQueue.Client.Commands;
     using BSUIR.ManagerQueue.Client.Models;
     using BSUIR.ManagerQueue.Client.Views;
@@ -11,9 +12,9 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
 
     public class QueueEntriesViewModel : BaseViewModel
     {
-        public static ServiceClient ServiceClient => ServiceClient.Instance.Value;
-
         #region Properties
+
+        public override string Title => Properties.Resources.QueueEntriesTabName;
 
         public IEnumerable<QueueItem> QueueItems => ServiceClient.CurrentUser.ForeignQueueEntries;
 
@@ -37,22 +38,17 @@ namespace BSUIR.ManagerQueue.Client.ViewModels
         {
             get
             {
-                return !isBusy && SelectedQueueItem != null;
+                return !IsBusy && SelectedQueueItem != null;
             }
         }
 
-        private bool isBusy;
-        public bool IsBusy
+        public override bool IsBusy
         {
-            get
-            {
-                return isBusy;
-            }
+            get => base.IsBusy;
 
             set
             {
-                isBusy = value;
-                NotifyPropertyChanged(nameof(IsBusy));
+                base.IsBusy = value;
                 NotifyPropertyChanged(nameof(IsExitQueueEnabled));
             }
         }
